@@ -1,0 +1,10 @@
+menu:
+  Home: /
+  Archives: /archives
+  About: /about/
+#If you dont want it, just comment it out
+kuan: kuan.com
+email: witherseas@gmail.com
+
+#Put into /source
+avator: avator.jpg
