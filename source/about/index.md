@@ -1,4 +1,9 @@
-title: About
-type: "高级且好听"
-comments: false
 ---
+title: About
+layout: about
+---
+
+# 开始
+
+
+# 一
