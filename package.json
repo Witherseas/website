@@ -2,6 +2,9 @@
   "name": "hexo-site",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "hexo": {
     "version": "7.3.0"
   },
@@ -9,7 +12,7 @@
     "hexo": "^7.3.0",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
-    "hexo-generator-feed": "^3.0.0",
+    "hexo-generator-feed": "^4.0.0",
     "hexo-generator-index": "^4.0.0",
     "hexo-generator-search": "^2.4.3",
     "hexo-generator-sitemap": "^3.0.1",
@@ -20,7 +23,7 @@
     "hexo-server": "^3.0.0"
   },
   "scripts": {
-    "dev": "hexo server -p $PORT",
+    "dev": "hexo server",
     "clean": "hexo clean",
     "build": "hexo clean && hexo generate"
   }
