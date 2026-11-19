@@ -5,7 +5,7 @@
 # Site
 title: 測碼先鋒 web
 subtitle:
-description:
+description: 个人随笔、转写与网站记录。
 keywords:
 author: withersy
 language: zh-CN
@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: https://witherseas.pages.dev
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -37,6 +37,7 @@ external_link:
   field: site # Apply to the whole site
   exclude: '' # Open external links in new tab
 filename_case: 0
+updated_option: 'date'
 render_drafts: false
 post_asset_folder: false
 relative_link: false
@@ -77,6 +78,18 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: claudia
+
+# Sitemap
+sitemap:
+  path: sitemap.xml
+  template: ./sitemap_template.xml
+
+# Feed
+feed:
+  enable: true
+  type: atom
+  path: atom.xml
+  limit: 20
 
 
 # Deployment

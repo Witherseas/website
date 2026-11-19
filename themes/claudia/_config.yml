@@ -28,7 +28,7 @@ user:
 # API config: https://utteranc.es/
 comment_utteranc:
   enable: true
-  repo: Withersy/website # your blog repo
+  repo: Witherseas/website # your blog repo
 
 
 # documents: https://valine.js.org/quickstart.html

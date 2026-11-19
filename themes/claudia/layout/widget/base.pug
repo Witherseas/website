@@ -1,10 +1,16 @@
 
-- if (is_archive()) pageTitle = 'Archives'
-- if (is_tag()) pageTitle = 'Tag: ' + page.tag
-- if (is_category()) pageTitle = 'Category: ' + page.category
-- if (is_month()) pageTitle += ': ' + page.month + '/' + page.year
-- if (is_year()) pageTitle += ': ' + page.year
-- var pageTitle = page.title || theme.user && theme.user.name + "'s blog"
+- var siteTitle = config.title || (theme.user && theme.user.name ? theme.user.name + "'s blog" : '')
+- var pageTitle = page.title ? page.title + ' | ' + siteTitle : siteTitle
+- if (is_archive()) pageTitle = 'Archives | ' + siteTitle
+- if (is_tag()) pageTitle = 'Tag: ' + page.tag + ' | ' + siteTitle
+- if (is_category()) pageTitle = 'Category: ' + page.category + ' | ' + siteTitle
+- if (is_month()) pageTitle = 'Archives: ' + page.month + '/' + page.year + ' | ' + siteTitle
+- if (is_year()) pageTitle = 'Archives: ' + page.year + ' | ' + siteTitle
+- var pageDescription = page.description || config.description || (theme.user && theme.user.description) || ''
+- var canonicalPath = is_home() ? '/' : page.path.replace(/index\.html$/, '')
+- var canonicalURL = full_url_for(canonicalPath)
+- var ogImage = page.photos && page.photos.length ? (page.photos[0].indexOf('http') === 0 ? page.photos[0] : full_url_for(page.photos[0])) : full_url_for(theme.user.avatar)
+- var ogType = is_post() ? 'article' : 'website'
 - var appearance = theme.appearance ? theme.appearance : 'auto'
 
 doctype html
@@ -12,8 +18,15 @@ html(lang=config.language class= `appearance-${ appearance }`)
   head
     meta(charset='UTF-8')
     title= pageTitle
-    meta(name="description" content= config.description || theme.user && theme.user.description)
+    meta(name="description" content= pageDescription)
     meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1")
+    meta(property='og:site_name' content= siteTitle)
+    meta(property='og:title' content= pageTitle)
+    meta(property='og:description' content= pageDescription)
+    meta(property='og:type' content= ogType)
+    meta(property='og:url' content= canonicalURL)
+    meta(property='og:image' content= ogImage)
+    link(rel='canonical' href= canonicalURL)
 
     <!-- Google Analytics -->
     if(theme.ga_track_id)

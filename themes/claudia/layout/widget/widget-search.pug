@@ -40,25 +40,52 @@ main.aside-card-container.search-widget.is-relative
 
 script.
     var searchDatabase = []
+    var searchRequest = null
     var searchInputEl = document.getElementById('searchInput')
     var searchButtonEl = document.getElementById('searchButton')
     var searchResultEl = document.getElementById('searchContent')
 
-    searchInputEl.oninput = function (evt) {
-        var searchValue = evt.srcElement.value
-        var haveSearchValue = Boolean(searchValue.trim())
-        if (!haveSearchValue) {
+    function ensureSearchDatabase() {
+        if (searchDatabase.length > 0) return Promise.resolve(searchDatabase)
+        if (searchRequest) return searchRequest
+
+        searchRequest = fetch('/search.xml').then(function (res) {
+            return res.text()
+        }).then(function (res) {
+            var domparser = new DOMParser()
+            var doc = domparser.parseFromString(res, 'application/xml')
+            var searchRoot = doc.getElementsByTagName('search')[0]
+            searchDatabase = searchRoot ? searchRoot.children : []
+            return searchDatabase
+        }).catch(function () {
+            searchRequest = null
+            searchDatabase = []
+            return []
+        })
+
+        return searchRequest
+    }
+
+    function runSearch() {
+        var searchValue = searchInputEl.value
+        if (!searchValue.trim()) {
             searchResultEl.style.height = 0
             searchResultEl.innerHTML = null
             return
         }
 
-        var searchResults = searching(searchValue)
-
-        if (searchResults.length > 0) {
-            renderSearchResults(searchResults)
-        }
+        ensureSearchDatabase().then(function () {
+            var searchResults = searching(searchValue)
+            if (searchResults.length > 0) {
+                renderSearchResults(searchResults)
+            } else {
+                searchResultEl.innerHTML = null
+                searchResultEl.style.height = 0
+            }
+        })
     }
+
+    searchInputEl.oninput = runSearch
 
     function renderSearchResults(results) {
         searchResultEl.innerHTML = null
@@ -129,13 +156,5 @@ script.
         return searchResults
     }
 
-    searchButtonEl.onclick = function () {
-        if (searchDatabase.length > 0) return;
-
-        fetch(window.location.href + '/search.xml').then(res => res.text()).then(res => {
-            var domparser = new DOMParser
-            var doc = domparser.parseFromString(res, 'application/xml')
-            searchDatabase = doc.getElementsByTagName('search')[0].children
-        })
-    }
+    searchButtonEl.onclick = runSearch
 
