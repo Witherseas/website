@@ -1,28 +1,21 @@
-- var debugSNS = false
-if (debugSNS || theme.social.twitter)
-    a(title="twitter" target="_blank" rel="noopener nofollow" href=`//twitter.com/${theme.social.twitter}`)
-        i.iconfont.icon-twitter
-// Github
-if (debugSNS || theme.social.github)
-    a(title="github" target="_blank" rel="noopener nofollow" href=`//github.com/${theme.social.github}`)
-        i.iconfont.icon-github
-// Ins
-if (debugSNS || theme.social.instagram)
-    a(title="instagram" target="_blank" rel="noopener nofollow" href=`//www.instagram.com/${theme.social.instagram}`)
-        i.iconfont.icon-ins
-// RSS
-if (debugSNS || config.feed && config.feed.enable)
-    a(title="rss" target="_blank" rel="noopener nofollow" href= url_for(config.feed.path))
-        i.iconfont.icon-rss
-// 知乎
-if (debugSNS || theme.social.zhihu)
-    a(title="zhihu" target="_blank" rel="noopener nofollow" href=`//zhihu.com/${theme.social.zhihu}`)
-        i.iconfont.icon-zhihu
-// 领英
-if (debugSNS || theme.social.linkedin)
-    a(title="linkedin" target="_blank" rel="noopener nofollow" href=`//www.linkedin.com/in/${theme.social.linkedin}`)
-        i.iconfont.icon-linkedin
-// 脸书
-if (debugSNS || theme.social.facebook)
-    a(title="facebook" target="_blank" rel="noopener nofollow" href=`//www.facebook.com/${theme.social.facebook}`)
-        i.iconfont.icon-tian7_facebook
+- var snsLinks = []
+if theme.social.twitter
+  - snsLinks.push({ href: `//twitter.com/${theme.social.twitter}`, label: 'Twitter' })
+if theme.social.github
+  - snsLinks.push({ href: `//github.com/${theme.social.github}`, label: 'GitHub' })
+if theme.social.instagram
+  - snsLinks.push({ href: `//www.instagram.com/${theme.social.instagram}`, label: 'Instagram' })
+if config.feed && config.feed.enable
+  - snsLinks.push({ href: url_for(config.feed.path), label: 'RSS' })
+if theme.social.zhihu
+  - snsLinks.push({ href: `//zhihu.com/${theme.social.zhihu}`, label: '知乎' })
+if theme.social.linkedin
+  - snsLinks.push({ href: `//www.linkedin.com/in/${theme.social.linkedin}`, label: 'LinkedIn' })
+if theme.social.facebook
+  - snsLinks.push({ href: `//www.facebook.com/${theme.social.facebook}`, label: 'Facebook' })
+if snsLinks.length > 0
+  section.sns-container
+    each item, index in snsLinks
+      if index > 0
+        span.wm-sep= '|'
+      a(title=item.label target="_blank" rel="noopener nofollow" href=item.href)= item.label

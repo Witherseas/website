@@ -59,13 +59,23 @@ html(lang=config.language class= `appearance-${ appearance }`)
     script(src= url_for("/js/common.js"))
     block head
 
-  body.is-flex.is-flex-direction-column
-    include widget-header
+  body.wm.is-flex.is-flex-direction-column
     main
+      nav.wm-topnav
+        a.wm-brand(href= url_for('/'))= siteTitle
+        if theme.menu
+          each url, label in theme.menu
+            span.wm-sep= '|'
+            a(href= url_for(url))= label && _p(label.toLowerCase())
+        if config.feed && config.feed.enable
+          span.wm-sep= '|'
+          a(href= url_for(config.feed.path) rel='alternate' type='application/atom+xml') RSS
+      if is_archive() || is_tag() || is_category()
+        div.wm-topic
+          block topic
       block content
     footer.is-flex.is-flex-direction-column.is-align-items-center.is-flex-shrink-0.is-family-serif
-      section.sns-container
-        include widget-sns
+      include widget-sns
       p
         span Copyright ©
         - var author = (theme.user && theme.user.name) || config.author || ''
@@ -74,11 +84,8 @@ html(lang=config.language class= `appearance-${ appearance }`)
         p Powered by Hexo &verbar;&nbsp;
         p.is-flex.is-justify-content-center
           a(title="Hexo theme author" href='//github.com/haojen') Theme by Haojen&nbsp;
-        div(style="margin-top: 2px")
-          a(title="github-button" class="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true")
       div
         span!= theme.user && theme.user.footnotes
 
-    script(async defer src="https://buttons.github.io/buttons.js")
     block script
 

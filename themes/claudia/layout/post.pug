@@ -17,7 +17,6 @@ block content
     - var tocContent = toc(page.content, {list_number: false})
     main.container.is-max-widescreen.content.section.post-page.pt-4.px-4
         .columns.is-flex-desktop.is-justify-content-center.is-flex-direction-row-reverse
-            .column.is-3.is-hidden-mobile(class= tocContent.length < 1 && 'is-hidden')!= tocContent
             .column.is-9
                 header.my-4
                     if page.tags && page.tags.length > 0
@@ -27,6 +26,11 @@ block content
                 h1.mt-0.mb-1.is-family-serif#postTitle= page.title
                 if page.date
                     time.has-text-grey(datetime=page.date.toJSON())= date(page.date, date_format)
+                if tocContent && tocContent.length > 0
+                    nav.wm-toc(aria-label='目录')
+                        button.wm-toc-toggle(type='button' aria-expanded='false' aria-controls='wm-toc-body')
+                            span 目录
+                        div#wm-toc-body.wm-toc-body!= tocContent
                 article.mt-2.post-content!= page.content
                 section.jump-container.is-flex.is-justify-content-space-between.my-6
                     // em is empty placeholder
@@ -69,3 +73,23 @@ block script
         script(src= url_for("/js/jquery-fancybox.min.js"))
         script(src= url_for("/js/img_zoom.js"))
     script(src= url_for("/js/post.js"))
+    script.
+        (function () {
+            var toc = document.querySelector('.wm-toc');
+            if (!toc) return;
+
+            var toggle = toc.querySelector('.wm-toc-toggle');
+            if (!toggle) return;
+
+            toggle.addEventListener('click', function () {
+                var open = toc.classList.toggle('is-open');
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            });
+
+            toc.addEventListener('click', function (event) {
+                if (event.target.closest('a')) {
+                    toc.classList.remove('is-open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        })();
